@@ -22,7 +22,7 @@ app.use('/webshop/v1/products', multer({storage: multer.memoryStorage()}).single
 
 
 // Start server
-require('./Product/Domain/database/webShopDataBase');
+require('./Product/Infrastructure/database/webShopDataBase');
 require('./Product/Infrastructure/cloudinary/Cloudinary')
 
 module.exports = {app, port}

@@ -1,4 +1,4 @@
-const ProductModel = require('../database/models/webShop');
+const ProductModel = require('../../Infrastructure/database/models/webShop');
 
 const getProducts = async () => { 
     try {
