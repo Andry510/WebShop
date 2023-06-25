@@ -1,20 +1,38 @@
-const { cloudinary}  = require('../../Aplication/middlewares/Middleware')
-const { FLODEN_NAME } = require('../../Infrastructure/config/confing')
+const { sharp, fs, cloudinary }  = require('../../Aplication/middlewares/Middleware')
+const { FOLDEN_NAME } = require('../../Infrastructure/config/confing')
 
 
-const GetImage = ( imgId ) => {
-    
-}
+const SendImage = async (name, photo) => {
+  try { 
+    if( name && photo)       
+    {
+      const imageBuffer = await sharp(photo.buffer).resize(400,400, {
+        fit:'inside',      
+      }).toBuffer()    
+     
+      const localFilePath = `./src/images/${name}.png`
+      
+      await fs.writeFileSync(localFilePath, imageBuffer);
 
-const SendImage = (id, nameImg) => {
-  try {    
-    cloudinary.uploader.upload('https://picsum.photos/640/640?r=8230', {folder: FLODEN_NAME, public_id: id})
+      await cloudinary.uploader.upload(localFilePath, {folder: FOLDEN_NAME, public_id: name})          
+      
+      await fs.unlinkSync(localFilePath);
+
+      const urlImg = cloudinary.url(`${FOLDEN_NAME}/${name}`, { transformation: [{ width: 500, height: 500, crop: 'fill' }] })      
+
+  
+      return  urlImg;
+
+    }        
+
+    return null
+
   } catch (error) {
+
     console.error(error)
+    return null;
+
   }  
 }
 
-module.exports = {
-    GetImage,
-    SendImage,
-}
+module.exports = { SendImage }

@@ -9,7 +9,7 @@ cloudinary.config({
 })
 
 if (cloudinary.config().cloud_name) {
-    console.log('Conexión exitosa a Cloudinary');
+    console.log('Connection to Cloudinary');
 } else {
     console.log('No se pudo establecer la conexión a Cloudinary');
 }
